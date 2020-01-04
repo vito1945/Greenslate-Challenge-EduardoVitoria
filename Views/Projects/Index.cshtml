@@ -10,109 +10,44 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
-    
+
+    <link rel="stylesheet" type="text/css" href="~/lib/bootstrap/dist/css/bootstrap.css">
+
     <script src="~/lib/jquery/dist/jquery.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#dropdownUsers').on('change', function () {
-                if ($("#dropdownUsers option:selected").text().localeCompare("--") != 0) {
-                    fillUserInformation();
-                }
-                else
-                {
-                    clearSelect();
-                }
-            });
-
-            function clearSelect()
-            {
-                $('#project_id_column').html("");
-                $('#start_date_column').html("");
-                $('#time_to_start_column').html("");
-                $('#end_date_column').html("");
-                $('#credits_column').html("");
-                $('#status_column').html("");
-            }
-
-            function fillUserInformation() {
-                var dropDownSelectedUserId = $("#dropdownUsers option:selected").attr( "user_id" );
-                
-                $.ajax({
-                    url: '@Url.Action("QueryUserInformation","Projects")',
-                    method: "POST",
-                    data: { userId: dropDownSelectedUserId},
-                    dataType: "json",
-                    context: document.body
-                }).done(function (data) {
-                    var projectsIds = "";
-                    var startDates = "";
-                    var timeToStart = "";
-                    var endDates = "";
-                    var credits = "";
-                    var isActive = "";
-
-                    jQuery.each(data, function (index, item) {
-                        console.log("index = " + index)
-                        jQuery.each(item, function(index2, item2) {
-                            switch(index) {
-                              case "projectsIds":
-                                    projectsIds += item2 + "<br/>";
-                                break;
-                              case "startDates":
-                                    startDates += item2 + "<br/>";
-                                break;
-                              case "timeToStart":
-                                    timeToStart += item2 + "<br/>";
-                                    break;
-                              case "endDates":
-                                    endDates += item2 + "<br/>";
-                                    break;
-                              case "credits":
-                                    credits += item2 + "<br/>";
-                                    break;
-                              case "isActive":
-                                    isActive += item2 + "<br/>";
-                                break;
-                              default:
-                            }
-                        });
-                    });
-
-                    $('#project_id_column').html(projectsIds);
-                    $('#start_date_column').html(startDates);
-                    $('#time_to_start_column').html(timeToStart);
-                    $('#end_date_column').html(endDates);
-                    $('#credits_column').html(credits);
-                    $('#status_column').html(isActive);
-                });
-            }
-        });
-    </script>
+    <script type="text/javascript" src="~/js/UserInformation.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 </head>
 <body>
 
-    <select id="dropdownUsers">
-        <option value="0">--</option>
-        @{
-            int counter = 0;
-            foreach (var item in Model.FirstNames)
-            {
-                <option user_id=@Model.Ids[counter]>@item</option>
-                counter++;
+    </br>
+
+    <center>
+        <select id="dropdownUsers">
+            <option value="0">--</option>
+            @{
+                int counter = 0;
+                foreach (var item in Model.FirstNames)
+                {
+                    <option user_id=@Model.Ids[counter]>@item</option>
+                    counter++;
+                }
             }
-        }
-    </select>
-    
-    <table id="projects_table" border='1'>
-        <tr>
-            <th>Project Id</th>
-            <th>Start Date</th>
-            <th>Time to start</th>
-            <th>End Date</th>
-            <th>Credits</th>
-            <th>Status</th>
-        </tr>
+        </select>
+    </center>
+
+    </br>
+
+    <table id="projects_table" class="table" border='1'>
+        <thead class="thead-dark">
+            <tr>
+                <th>Project Id</th>
+                <th>Start Date</th>
+                <th>Time to start</th>
+                <th>End Date</th>
+                <th>Credits</th>
+                <th>Status</th>
+            </tr>
+        </thead>
         <tr>
             <td id="project_id_column"></td>
             <td id="start_date_column"></td>
